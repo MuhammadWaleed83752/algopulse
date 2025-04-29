@@ -1,0 +1,79 @@
+<div *ngIf="isLoading" class="col-span-12 lg:col-span-6 xl:col-span-3">
+    <div class="card mb-0">
+        <div class="flex justify-between mb-4">
+            <div>
+                <span class="block text-muted-color font-medium mb-4">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!isLoading" class="col-span-12 lg:col-span-6 xl:col-span-3">
+    <div class="card mb-0">
+        <div class="flex justify-between mb-4">
+            <div>
+                <span class="block text-muted-color font-medium mb-4">Global Market Cap</span>
+                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+                    {{ globalStats.quote.USD.total_market_cap | currency:'USD' }}
+                </div>
+            </div>
+            <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-chart-bar text-blue-500 !text-xl"></i>
+            </div>
+        </div>
+        <span class="text-primary font-medium">{{ globalStats.today_change_percent | number:'1.4-4' }}% </span>
+        <span class="text-muted-color">24h Change</span>
+    </div>
+</div>
+
+<div *ngIf="!isLoading" class="col-span-12 lg:col-span-6 xl:col-span-3">
+    <div class="card mb-0">
+        <div class="flex justify-between mb-4">
+            <div>
+                <span class="block text-muted-color font-medium mb-4">Bitcoin Dominance</span>
+                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+                    {{ globalStats.btc_dominance | number:'1.4-4' }}%
+                </div>
+            </div>
+            <div class="flex items-center justify-center bg-orange-100 dark:bg-orange-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-bitcoin text-yellow-500 !text-xl"></i>
+            </div>
+        </div>
+        <span class="text-primary font-medium">{{ globalStats.btc_dominance_24h_percentage_change | number:'1.4-4' }}% </span>
+        <span class="text-muted-color">24h Volume Change</span>
+    </div>
+</div>
+
+<div *ngIf="!isLoading" class="col-span-12 lg:col-span-6 xl:col-span-3">
+    <div class="card mb-0">
+        <div class="flex justify-between mb-4">
+            <div>
+                <span class="block text-muted-color font-medium mb-4">Total Market Cap</span>
+                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+                    {{ globalStats.quote.USD.total_market_cap | currency:'USD' }}%
+                </div>
+            </div>
+            <div class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-dollar text-orange-500 !text-xl"></i>
+            </div>
+        </div>
+        <span class="text-primary font-medium">{{ globalStats.quote.USD.total_market_cap_yesterday_percentage_change | number:'1.4-4' }}% </span>
+        <span class="text-muted-color">24h Change</span>
+    </div>
+</div>
+
+<div *ngIf="!isLoading" class="col-span-12 lg:col-span-6 xl:col-span-3">
+    <div class="card mb-0">
+        <div class="flex justify-between mb-8">
+            <div>
+                <span class="block text-muted-color font-medium mb-4">Total Cryptocurrencies</span>
+                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+                    {{ globalStats.total_cryptocurrencies }}
+                </div>
+            </div>
+            <div class="flex items-center justify-center bg-purple-100 dark:bg-purple-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-users text-purple-500 !text-xl"></i>
+            </div>
+        </div>
+    </div>
+</div>
