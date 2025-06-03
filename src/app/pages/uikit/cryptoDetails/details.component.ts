@@ -69,14 +69,14 @@ export class Details implements OnInit {
         private cryptoService: CryptoService, private toast: HotToastService
     ) { }
 
-    showToast() {
-        this.toast.show('Hello World!');
-        this.toast.loading('Lazyyy...');
-        this.toast.success('Yeah!!');
-        this.toast.warning('Boo!');
-        this.toast.error('Oh no!');
-        this.toast.info('Something...');
-      }
+    // showToast() {
+    //     this.toast.show('Hello World!');
+    //     this.toast.loading('Lazyyy...');
+    //     this.toast.success('Yeah!!');
+    //     this.toast.warning('Boo!');
+    //     this.toast.error('Oh no!');
+    //     this.toast.info('Something...');
+    //   }
 
     ngOnInit() {
         this.getExchanges();

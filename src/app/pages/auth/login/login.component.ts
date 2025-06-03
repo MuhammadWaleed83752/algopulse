@@ -9,6 +9,9 @@ import { RippleModule } from 'primeng/ripple';
 import { AppFloatingConfigurator } from '../../../layout/component/app.floatingconfigurator';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { HotToastService } from '@ngxpert/hot-toast';
+
+
 @Component({
     selector: 'app-login',
     standalone: true,
@@ -17,7 +20,7 @@ import { Router } from '@angular/router';
 })
 export class Login {
 
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private authService: AuthService, private router: Router, private toast: HotToastService) {}
 
     username: string = '';
 
@@ -33,7 +36,13 @@ onLogin() {
         password: this.password
     };
 
-    this.authService.login(credentials).subscribe({
+    this.authService.login(credentials).pipe(
+      this.toast.observe({
+        success: 'Signed In Successfully!',
+        error: 'Invalid Credentials',
+        loading: 'Signing In...',
+      })
+    ).subscribe({
       next: (res: any) => {
         this.authService.setToken(res.access_token);
         // console.log('Login successful', res.detail);

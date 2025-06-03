@@ -1,0 +1,22 @@
+<div class="w-screen h-screen relative" style="width: 100%;">
+  <!-- Map container -->
+  <div id="map" class="map-container w-full h-full"></div>
+
+  <!-- Style switch buttons -->
+  <div class="absolute top-4 left-4 flex flex-col gap-2 z-10">
+  <button
+    *ngIf="currentMode !== 'light'"
+    (click)="setLightMode()"
+    class="p-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition"
+  >
+    Light Mode
+  </button>
+  <button
+    *ngIf="currentMode !== 'dark'"
+    (click)="setDarkMode()"
+    class="p-2 bg-gray-800 text-white rounded shadow hover:bg-gray-900 transition"
+  >
+    Dark Mode
+  </button>
+</div>
+</div>

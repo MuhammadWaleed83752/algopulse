@@ -15,9 +15,16 @@ import { OverlayDemo } from './overlaydemo';
 import { TreeDemo } from './treedemo';
 import { MenuDemo } from './menudemo';
 import { Details } from './cryptoDetails/details.component';
+import { Chat } from './chat/chat.component';
+import { Maps } from './maps/map.component';
+import { Tailwind } from './tailwind/tailwind.component'
+
 
 export default [
     { path: 'cryptoDetails/details', data: { breadcrumb: 'Button' }, component: Details },
+    { path: 'tailwind/tailwind', data: { breadcrumb: 'Button' }, component: Tailwind },
+    { path: 'maps/map', data: { breadcrumb: 'Globe' }, component: Maps },
+    { path: 'cryptoDetails/chat', data: { breadcrumb: 'Button' }, component: Chat },
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
     { path: 'file', data: { breadcrumb: 'File' }, component: FileDemo },

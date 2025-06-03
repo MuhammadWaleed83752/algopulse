@@ -1,0 +1,14 @@
+.map-container {
+    width: 100%;
+    height: 100vh; /* fills full viewport height */
+    border-radius: 12px;
+}
+.map-container .map {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.map-container .map .leaflet-control-attribution {
+    display: none; /* hide attribution control */
+}

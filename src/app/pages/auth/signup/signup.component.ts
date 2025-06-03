@@ -7,6 +7,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { AppFloatingConfigurator } from '../../../layout/component/app.floatingconfigurator';
+import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
     selector: 'app-signup',
@@ -15,10 +18,37 @@ import { AppFloatingConfigurator } from '../../../layout/component/app.floatingc
     templateUrl: './signup.component.html'
 })
 export class Signup {
+
+    constructor(private authService: AuthService, private router: Router, private toast: HotToastService) {}
+
     email: string = '';
+    
     username: string = '';
 
     password: string = '';
 
-    checked: boolean = false;
+
+    onSignup() {
+        const newUser = {
+            email: this.email,
+            username: this.username,
+            password: this.password
+        };
+    
+        this.authService.signup(newUser).pipe(
+            this.toast.observe({
+              success: 'User Created Successfully!',
+              error: 'User Already Exists!',
+              loading: 'Loading...',
+            })
+          ).subscribe({
+          next: (res: any) => {
+            this.authService.setToken(res.access_token);
+            // console.log('Login successful', res.detail);
+            // this.toastr.success('Login successful');
+            this.router.navigate(['/']);
+          },
+          error: (err) => console.log(err.error.detail, ' Login failed'),
+        });
+      }
 }
