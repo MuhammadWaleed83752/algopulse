@@ -1,0 +1,23 @@
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
+  <h1 class="text-center text-lg text-blue-400 mb-4">MCP Server Tool Calling</h1>
+  <form #form="ngForm" (ngSubmit)="submit()" class="flex flex-col gap-4">
+    <input
+  [value]="userInput()"
+  (input)="onInputChange($event)"
+  name="userInput"
+  type="text"
+  placeholder="Enter your query"
+  class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+  required
+/>
+    <button
+      type="submit"
+      class="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600 transition"
+    >
+      Submit
+    </button>
+  </form>
+  <div *ngIf="response()" class="mt-4 p-3 bg-gray-100 rounded text-gray-800">
+    <strong>Response:</strong> {{ response() }}
+  </div>
+</div>

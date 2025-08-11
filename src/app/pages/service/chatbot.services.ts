@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environement';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatbotService {
-  private apiUrlChat = 'http://localhost:8000/ask-llm'; // Ensure this matches your backend endpoint
+  private apiUrlChat = `${environment.apiBaseUrl}/ask-llm`;
 
   constructor(private http: HttpClient) {}
 

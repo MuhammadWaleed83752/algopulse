@@ -23,40 +23,49 @@ import { MapService } from '../../service/map.service';
 })
 export class Maps implements OnInit {
   map: mapboxgl.Map | undefined;
-  style = 'mapbox://styles/mapbox/dark-v10';
-  center: [number, number] = [46.6753, 24.7136];
-  constructor(private mapService: MapService) { }
   vectorTileUrl: string = '';
-  currentMode: 'light' | 'dark' = 'dark';
+  vectorTilePoiUrl: string = '';
+  center: [number, number] = [46.6753, 24.7136];
+  currentMode: 'light' | 'dark' | 'osm' = 'osm';
+
+  constructor(private mapService: MapService) { }
+
   ngOnInit() {
     this.map = new mapboxgl.Map({
       accessToken: 'pk.eyJ1IjoibXVoYW1tYWR3YWxlZWQxMTIyIiwiYSI6ImNtYWR3amEyczAxNXIyanNmeWVoYjl0N2MifQ.zG8v86Wtb4BTdrF02n5qMw',
       container: 'map',
-      style: this.style,
-      zoom: 13,
-
+      style: 'https://api.maptiler.com/maps/openstreetmap/style.json?key=6NZ70ahtyfXGNJv2av9P',
       center: this.center,
-      projection: 'globe'
+      zoom: 13,
+      projection: 'globe',
     });
 
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    // Load vector tile URL once
     this.mapService.getVectorTilesRoads().subscribe({
       next: (url: string) => {
         this.vectorTileUrl = url;
         this.map?.on('load', () => {
-          this.addVectorTilesRoads(); // Initial call after map load
+          this.addVectorTilesRoads();
         });
       },
       error: (err) => console.error('Failed to load vector tiles:', err),
+    });
+
+    this.mapService.getVectorTilesPois().subscribe({
+      next: (url: string) => {
+        this.vectorTilePoiUrl = url;
+        this.map?.on('load', () => {
+          this.addVectorTilesPois();
+        });
+      },
+      error: (err) => console.error('Failed to load vector tiles (POIs):', err),
     });
   }
 
   private addVectorTilesRoads(): void {
     if (!this.map || !this.vectorTileUrl) return;
-
-    if (this.map.getSource('roads-tiles')) return; // Avoid duplicates
+    if (this.map.getSource('roads-tiles')) return;
 
     this.map.addSource('roads-tiles', {
       type: 'vector',
@@ -65,63 +74,88 @@ export class Maps implements OnInit {
       maxzoom: 14,
     });
 
-    // Add motorways below labels
-    this.map.addLayer(
-      {
-        id: 'motorways',
-        type: 'line',
-        source: 'roads-tiles',
-        'source-layer': 'public.riyadh_roads',
-        filter: ['in', 'highway', 'motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link'],
-        paint: {
-          'line-color': '#e65100',
-          'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1.5, 18, 6],
-        },
+    // Motorways: orange
+    this.map.addLayer({
+      id: 'motorways',
+      type: 'line',
+      source: 'roads-tiles',
+      'source-layer': 'public.riyadh_roads',
+      filter: ['in', 'highway', 'motorway', 'motorway_link'],
+      paint: {
+        'line-color': '#ff7e00',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.5, 18, 4],
       },
-      'road-label' // Add below the 'road-label' layer
+    });
+
+    // Primary roads: yellow
+    this.map.addLayer({
+      id: 'primary-roads',
+      type: 'line',
+      source: 'roads-tiles',
+      'source-layer': 'public.riyadh_roads',
+      filter: ['in', 'highway', 'primary', 'primary_link'],
+      paint: {
+        'line-color': '#ffcc00',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.3, 18, 3],
+      },
+    });
+
+    // Secondary roads: light yellow
+    this.map.addLayer({
+      id: 'secondary-roads',
+      type: 'line',
+      source: 'roads-tiles',
+      'source-layer': 'public.riyadh_roads',
+      filter: ['in', 'highway', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link'],
+      paint: {
+        'line-color': '#ffff99',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1, 18, 2.5],
+      },
+      minzoom: 12,
+    });
+
+    // Residential roads: light gray
+    this.map.addLayer({
+      id: 'residential-roads',
+      type: 'line',
+      source: 'roads-tiles',
+      'source-layer': 'public.riyadh_roads',
+      filter: ['in', 'highway', 'residential', 'living_street', 'service', 'services', 'road', 'unclassified'],
+      paint: {
+        'line-color': '#cccccc',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 12, 0.5, 18, 2],
+      },
+      minzoom: 12,
+    });
+    const layers = this.map.getStyle().layers!;
+    const roadLabelLayer = layers.find(layer =>
+      layer.type === 'symbol' &&
+      layer.layout &&
+      typeof layer.layout['text-field'] === 'string' &&
+      layer.layout['text-field'].includes('name') &&
+      layer.id.toLowerCase().includes('road')
     );
 
-    // Add primary roads below labels
-    this.map.addLayer(
-      {
-        id: 'primary-roads',
-        type: 'line',
-        source: 'roads-tiles',
-        'source-layer': 'public.riyadh_roads',
-        filter: ['in', 'highway', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'unclassified'],
-        paint: {
-          'line-color': '#f9a825',
-          'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1, 18, 4],
-        },
-        minzoom: 14,
-      },
-      'road-label' // Add below the 'road-label' layer
-    );
-
-    // Add residential roads below labels
-    this.map.addLayer(
-      {
-        id: 'residential-roads',
-        type: 'line',
-        source: 'roads-tiles',
-        'source-layer': 'public.riyadh_roads',
-        filter: ['in', 'highway', 'residential', 'living_street', 'service', 'services', 'road'],
-        paint: {
-          'line-color': '#7a7c7c',
-          'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1, 18, 4],
-        },
-        minzoom: 12,
-      },
-      'road-label' // Add below the 'road-label' layer
-    );
+    console.log('Found road label layer:', roadLabelLayer?.id);
   }
 
+  setOSMMode(): void {
+    if (this.map) {
+      this.map.setStyle('https://api.maptiler.com/maps/openstreetmap/style.json?key=6NZ70ahtyfXGNJv2av9P');
+      this.map.once('style.load', () => {
+        setTimeout(() => {
+          this.addVectorTilesRoads();
+          this.addVectorTilesPois();
+        }, 100);
+      });
+      this.currentMode = 'osm';
+    }
+  }
 
   setLightMode(): void {
     if (this.map) {
       this.map.setStyle('mapbox://styles/mapbox/streets-v12');
       this.map.once('style.load', () => {
-        // Wait until tileset is fully ready before calling
         setTimeout(() => this.addVectorTilesRoads(), 100);
       });
       this.currentMode = 'light';
@@ -138,14 +172,46 @@ export class Maps implements OnInit {
     }
   }
 
-  // setSatelliteMode(): void {
-  //   if (this.map) {
-  //     this.map.setStyle('mapbox://styles/mapbox/satellite-v9');
-  //     this.map.once('style.load', () => {
-  //       setTimeout(() => this.addVectorTilesRoads(), 100);
-  //     });
-  //   }
-  // }
+  private addVectorTilesPois(): void {
+    if (!this.map || !this.vectorTilePoiUrl) return;
 
+    if (this.map.getSource('poi-tiles')) return;
 
+    this.map.addSource('poi-tiles', {
+      type: 'vector',
+      tiles: [this.vectorTilePoiUrl],
+      minzoom: 0,
+      maxzoom: 16,
+    });
+    const markerUrl = '/assets/icons/osm-marker.png';
+    this.map.loadImage(markerUrl, (error, image) => {
+      if (error || !image) {
+        console.error('Failed to load POI marker image:', error);
+        return;
+      }
+
+      if (!this.map!.hasImage('custom-poi-marker')) {
+        this.map!.addImage('custom-poi-marker', image);
+      }
+
+      this.map!.addLayer({
+        id: 'poi-layer',
+        type: 'symbol',
+        source: 'poi-tiles',
+        'source-layer': 'public.riyadh_pois',
+        layout: {
+          'icon-image': 'custom-poi-marker',
+          'icon-size': 0.7,
+          'icon-allow-overlap': true,
+        },
+        filter: [
+          'in', 'amenity',
+          'hospital', 'school', 'university', 'mosque',
+          'police', 'government', 'townhall',
+          'hotel', 'museum', 'library', 'bank'
+        ]
+      });
+    });
+
+  }
 }

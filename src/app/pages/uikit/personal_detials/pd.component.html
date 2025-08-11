@@ -1,0 +1,106 @@
+<p-button (click)="toggleLanguage()">
+  {{ currentLang === 'en' ? 'العربية' : 'English' }}
+</p-button>
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+    <p-fluid>
+        <div class="flex mt-8">
+            <div class="card flex flex-col gap-6 w-full">
+                <div class="font-semibold text-xl">{{ 'FORM.PERSONAL_INFORMATION' | translate}}</div>
+                <div class="font-semibold text-lg">{{ 'FORM.NAME' | translate }}</div>
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="flex flex-wrap gap-2 w-36">
+                        <p-dropdown name="selectedGender" [(ngModel)]="personalDetails.selectedGender" [options]="gender"
+                            optionLabel="name" placeholder="Select One" class="w-full" required #genderRef="ngModel"
+                            [ngClass]="{
+    '!border-red-500': genderRef.invalid && genderRef.touched,
+    '!border-gray-300': genderRef.valid || !genderRef.touched
+  }">
+                        </p-dropdown>
+                        <!-- <div *ngIf="genderRef.invalid && genderRef.touched" class="text-red-500 text-sm">
+                            Gender is required.
+                        </div> -->
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <input pInputText id="firstname" name="firstName" type="text" placeholder="First Name"
+                            [(ngModel)]="personalDetails.firstName" required #firstNameRef="ngModel" [ngClass]="{
+         '!border-red-500': firstNameRef.invalid && firstNameRef.touched,
+         '!border-gray-300': firstNameRef.valid || !firstNameRef.touched
+       }" class="w-full border rounded p-2 focus:outline-none" />
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <input pInputText id="middlename" name="middleName" type="text" placeholder="Middle Name"
+                            [(ngModel)]="personalDetails.middleName" />
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <input pInputText id="lastName" name="lastName" type="text" placeholder="Last Name"
+                            [(ngModel)]="personalDetails.lastName" required #lastNameRef="ngModel" [ngClass]="{
+         '!border-red-500': lastNameRef.invalid && lastNameRef.touched,
+         '!border-gray-300': lastNameRef.valid || !lastNameRef.touched
+       }" class="w-full border rounded p-2 focus:outline-none" />
+                        <!-- <input pInputText id="lastName" name="lastName" type="text" placeholder="Last Name"
+                            [(ngModel)]="lastName" required #lastNameRef="ngModel" /> -->
+                        <!-- <div *ngIf="lastNameRef.invalid && lastNameRef.touched" class="text-red-500 text-sm">
+                            Last name is required.
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="flex flex-col gap-2 w-full">
+                        <div class="font-semibold text-lg">{{ 'FORM.CIVIL_STATUS' | translate }}</div>
+                        <p-dropdown id="civilStatus" name="civilStatus" [(ngModel)]="personalDetails.selectedCivilStatus"
+                            [options]="civilStatus" optionLabel="name" placeholder="Select One" class="w-full">
+                        </p-dropdown>
+                    </div>
+                    <div class="flex flex-col gap-2 w-full">
+                        <div class="font-semibold text-lg">{{ 'FORM.MOBILE_NUMBER' | translate }}</div>
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <p-inputMask id="mobile" name="mobileNumber" mask="(999) 999-9999"
+                                [(ngModel)]="personalDetails.mobileNumber" placeholder="(000) 000-0000" class="w-full">
+                            </p-inputMask>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="flex flex-col gap-2 w-full">
+                        <div class="font-semibold text-lg">{{ 'FORM.COUNTRY_OF_BIRTH' | translate }}</div>
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <p-dropdown id="country" name="countryOfBirth" [(ngModel)]="personalDetails.selectedCountry"
+                                [options]="countries" optionLabel="name" placeholder="Select One" class="w-full">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2 w-full">
+                        <div class="font-semibold text-lg">{{ 'FORM.CITY_OF_BIRTH' | translate }}</div>
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <p-dropdown id="city" name="cityOfBirth" [(ngModel)]="personalDetails.selectedCity" [options]="cities"
+                                optionLabel="name" placeholder="Select One" class="w-full">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap">
+                    <label for="address" class="font-semibold text-lg">{{ 'FORM.ADDRESS' | translate }}</label>
+                    <textarea pTextarea id="address" name="address" rows="4" [(ngModel)]="personalDetails.address"></textarea>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <label for="jobTitle" class="font-semibold text-lg">{{ 'FORM.CURRENT_JOB' | translate }}</label>
+                        <input pInputText id="jobTitle" name="jobTitle" type="text" [(ngModel)]="personalDetails.jobTitle" />
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <label for="employer" class="font-semibold text-lg">{{ 'FORM.NAME_OF_EMPLOYER' | translate }}</label>
+                        <input pInputText id="employer" name="employer" type="text" [(ngModel)]="personalDetails.employer" />
+                    </div>
+                </div>
+
+                <div>
+                    <p-button label="Submit" type="submit" [disabled]="form.invalid" class="float-right"></p-button>
+                </div>
+            </div>
+        </div>
+    </p-fluid>
+</form>

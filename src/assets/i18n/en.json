@@ -1,0 +1,16 @@
+{
+  "FORM": {
+    "PERSONAL_INFORMATION": "Personal Information",
+    "NAME": "Name",
+    "FIRST_NAME": "First Name",
+    "LAST_NAME": "Last Name",
+    "SUBMIT": "Submit",
+    "CIVIL_STATUS": "Civil Status",
+    "COUNTRY_OF_BIRTH": "Country of Birth",
+    "CITY_OF_BIRTH": "City of Birth",
+    "ADDRESS": "Address",
+    "CURRENT_JOB": "Current Job",
+    "NAME_OF_EMPLOYER": "Name of Employer",
+    "MOBILE_NUMBER": "Mobile Number"
+  }
+}

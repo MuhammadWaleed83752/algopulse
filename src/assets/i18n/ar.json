@@ -1,0 +1,16 @@
+{
+  "FORM": {
+    "PERSONAL_INFORMATION": "المعلومات الشخصية",
+    "NAME": "الاسم",
+    "FIRST_NAME": "الاسم الأول",
+    "LAST_NAME": "اسم العائلة",
+    "SUBMIT": "إرسال",
+    "CIVIL_STATUS": "الحالة الاجتماعية",
+    "COUNTRY_OF_BIRTH": "بلد الميلاد",
+    "CITY_OF_BIRTH": "مدينة الميلاد",
+    "ADDRESS": "العنوان",
+    "CURRENT_JOB": "الوظيفة الحالية",
+    "NAME_OF_EMPLOYER": "اسم صاحب العمل",
+    "MOBILE_NUMBER": "رقم الجوال"
+  }
+}

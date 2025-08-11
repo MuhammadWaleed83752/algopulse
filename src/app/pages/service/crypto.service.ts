@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environement';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CryptoService {
 
-  private apiUrlCryptos = 'http://localhost:8000/api/cryptos';
-  private apiUrlcryptosStats = 'http://localhost:8000/api/cryptosStats';
-  private apiUrlExchanges = 'http://localhost:8000/api/exchangesTop';
-  private apiUrlExchangeDetails = 'http://localhost:8000/api/exchangesDetails';
+  private apiUrlCryptos = `${environment.apiBaseUrl}/crypto`;
+  private apiUrlcryptosStats = `${environment.apiBaseUrl}/cryptosStats`;
+  private apiUrlExchanges = `${environment.apiBaseUrl}/exchangesTop`;
+  private apiUrlExchangeDetails = `${environment.apiBaseUrl}/exchangesDetails`;
 
 
   constructor(private http: HttpClient) { }

@@ -17,14 +17,15 @@ import { MenuDemo } from './menudemo';
 import { Details } from './cryptoDetails/details.component';
 import { Chat } from './chat/chat.component';
 import { Maps } from './maps/map.component';
-import { Tailwind } from './tailwind/tailwind.component'
-
+import { MCPServer } from './model_context_protocol/mcp.component'
+import { PersonalDetailsComponent } from './personal_detials/pd.component';
 
 export default [
     { path: 'cryptoDetails/details', data: { breadcrumb: 'Button' }, component: Details },
-    { path: 'tailwind/tailwind', data: { breadcrumb: 'Button' }, component: Tailwind },
+    { path: 'model_context_protocol/mcp', data: { breadcrumb: 'Button' }, component: MCPServer },
     { path: 'maps/map', data: { breadcrumb: 'Globe' }, component: Maps },
     { path: 'cryptoDetails/chat', data: { breadcrumb: 'Button' }, component: Chat },
+    { path: 'personal_detials/pd', data: { breadcrumb: 'Button' }, component: PersonalDetailsComponent },
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
     { path: 'file', data: { breadcrumb: 'File' }, component: FileDemo },
